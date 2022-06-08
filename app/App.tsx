@@ -16,11 +16,12 @@ const App = () => {
     return (
       <SafeAreaProvider>
         <NavigationContainer>
+          <Header />
           <Stack.Navigator initialRouteName="Home">
             <Stack.Screen
               name="Home"
               component={HomeScreen}
-              options={{ header: () => Header() }}
+              options={{ header: () => null }}
             />
           </Stack.Navigator>
         </NavigationContainer>
