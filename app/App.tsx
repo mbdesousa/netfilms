@@ -1,45 +1,33 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import React from "react";
-import { View } from "react-native";
-
-const HomeScreen = (): JSX.Element => {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Home Screen</Text>
-    </View>
-  );
-}
+import { View, Text, StatusBar } from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import Header from "./components/Header";
+import useCachedResources from "./hooks/useCachedResources";
+import HomeScreen from "./screens/Home";
 
 const Stack = createNativeStackNavigator();
 
-function App() {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+const App = () => {
+  const isLoadingComplete = useCachedResources();
+  if (!isLoadingComplete) {
+    return null;
+  } else {
+    return (
+      <SafeAreaProvider>
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="Home">
+            <Stack.Screen
+              name="Home"
+              component={HomeScreen}
+              options={{ header: () => Header() }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+        <StatusBar backgroundColor={'#000000'} />
+      </SafeAreaProvider>
+    );
+  }
 }
-
-// export default function App() {
-//   const isLoadingComplete = useCachedResources();
-//   const colorScheme = useColorScheme();
-
-//   if (!isLoadingComplete) {
-//     return null;
-//   } else {
-//     return (
-//       <SafeAreaProvider>
-//         <Navigation colorScheme={colorScheme} />
-//         <StatusBar hidden />
-
-
-
-//       </SafeAreaProvider>
-//     );
-//   }
-// }
 
 export default App;
